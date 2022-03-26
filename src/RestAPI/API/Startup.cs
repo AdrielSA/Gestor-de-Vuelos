@@ -1,4 +1,8 @@
 using Domain.Entities;
+using Domain.Interfaces;
+using Domain.Options;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +26,12 @@ namespace API
         {
             services.AddDbContext<GestorVuelosContext>(builder => 
                 builder.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IVueloRepository, VueloRepository>();
+            services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.Configure<AuthOptions>(Configuration.GetSection("AuthOptions"));
+            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -41,6 +51,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
