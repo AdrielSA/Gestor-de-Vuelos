@@ -2,7 +2,7 @@
 
 namespace Domain.CustomEntities
 {
-    public class LoginResult
+    public class LoginResponse
     {
         public string Token { get; set; }
         public DateTime ExpiryDate { get; set; }

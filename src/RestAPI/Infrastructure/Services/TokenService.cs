@@ -1,5 +1,6 @@
 ﻿using Domain.CustomEntities;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Options;
 using Microsoft.Extensions.Options;
@@ -16,27 +17,28 @@ namespace Infrastructure.Services
     {
         private readonly IUsuarioRepository repository;
         private readonly IPasswordService passwordService;
-        private readonly AuthOptions options;
+        private readonly TokenOptions options;
 
         public TokenService(
             IUsuarioRepository repository,
             IPasswordService passwordService,
-            IOptions<AuthOptions> options)
+            IOptions<TokenOptions> options)
         {
             this.repository = repository;
             this.passwordService = passwordService;
             this.options = options.Value;
         }
 
-        public async Task<(bool, Usuario)> IsValidUser(Usuario login)
+        public async Task<(bool, Usuario)> IsValidUser(LoginRequest login)
         {
             var user = await repository.GetByLogin(login.Correo);
-            if (user == null) throw new ArgumentException("El usuario especificado no existe", nameof(login));
-            var isvalid = passwordService.CheckPass(user.Contraseña, login.Contraseña);
-            return (isvalid, user);
+            if (user == null) 
+                throw new CustomException("Correo inválido.");
+            var isValid = passwordService.CheckPass(user.Contraseña, login.Contraseña);
+            return (isValid, user);
         }
 
-        public LoginResult GetToken(Usuario auth)
+        public LoginResponse GetToken(Usuario auth)
         {
             //Header
             var symetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey));
@@ -58,11 +60,11 @@ namespace Infrastructure.Services
                 options.Audience,
                 claims,
                 DateTime.Now,
-                DateTime.UtcNow.AddMinutes(options.ValidTime)
+                DateTime.UtcNow.AddHours(options.ValidTime)
             );
 
             var token = new JwtSecurityToken(header, payload);
-            return new LoginResult
+            return new LoginResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpiryDate = token.ValidTo

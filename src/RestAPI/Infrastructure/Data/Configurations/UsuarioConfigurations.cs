@@ -17,6 +17,8 @@ namespace Infrastructure.Data.Configurations
 
             builder.Property(e => e.Contraseña).IsRequired();
 
+            builder.HasIndex(e => e.Correo).IsUnique();
+
             builder.Property(e => e.Correo)
                 .IsRequired()
                 .HasMaxLength(30);

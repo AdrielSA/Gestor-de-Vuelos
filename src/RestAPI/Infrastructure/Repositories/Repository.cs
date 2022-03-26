@@ -28,23 +28,20 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(T entity)
         {
             await entities.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             var entity = await GetAsync(id);
             entities.Remove(entity);
+            await context.SaveChangesAsync();
         }
 
         public async ValueTask DisposeAsync()
         {
             if(context != null) 
                 await context.DisposeAsync();
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await context.SaveChangesAsync();
         }
     }
 }

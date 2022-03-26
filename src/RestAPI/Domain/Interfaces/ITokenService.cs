@@ -6,7 +6,7 @@ namespace Domain.Interfaces
 {
     public interface ITokenService
     {
-        LoginResult GetToken(Usuario auth);
-        Task<(bool, Usuario)> IsValidUser(Usuario login);
+        LoginResponse GetToken(Usuario auth);
+        Task<(bool, Usuario)> IsValidUser(LoginRequest login);
     }
 }

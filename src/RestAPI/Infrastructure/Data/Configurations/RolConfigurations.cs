@@ -13,6 +13,8 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(e => e.Codigo)
                     .HasName("PK_ROL");
 
+            builder.HasIndex(e => e.Codigo).IsUnique();
+
             builder.Property(e => e.Codigo)
                 .HasMaxLength(5)
                 .IsUnicode(false);

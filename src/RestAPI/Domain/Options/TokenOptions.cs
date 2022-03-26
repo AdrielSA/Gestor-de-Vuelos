@@ -1,6 +1,6 @@
 ﻿namespace Domain.Options
 {
-    public class AuthOptions
+    public class TokenOptions
     {
         public string SecretKey { get; set; }
 

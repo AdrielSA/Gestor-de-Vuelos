@@ -22,11 +22,13 @@ namespace Infrastructure.Repositories
             entity.Regreso = vuelo.Regreso;
             entity.Pasajeros = vuelo.Pasajeros;
             entities.Update(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Vuelo>> GetAllAsync(string rol)
         {
-            return rol.Equals(null) ? await entities
+            var AdminRol = await context.Roles.FirstOrDefaultAsync();
+            return rol.Equals(AdminRol.Codigo) ? await entities
                 .ToListAsync() : await entities
                 .Include(x => x.Usuario)
                 .Where(x => x.Usuario.CodigoRol

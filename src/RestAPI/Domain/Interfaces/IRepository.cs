@@ -8,6 +8,5 @@ namespace Domain.Interfaces
         Task AddAsync(T entity);
         Task DeleteAsync(int id);
         Task<T> GetAsync(int id);
-        Task SaveChangesAsync();
     }
 }

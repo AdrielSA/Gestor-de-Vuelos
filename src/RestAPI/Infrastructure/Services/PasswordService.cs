@@ -58,7 +58,8 @@ namespace Infrastructure.Services
             var hash = encrypt.GetBytes(options.KeySize);
             for (var i = 0; i < options.KeySize; i++)
             {
-                if (hashBytes[i + options.SaltSize] != hash[i]) return false;
+                if (!hashBytes[i + options.SaltSize].Equals(hash[i])) 
+                    return false;
             }
             return true;
         }
