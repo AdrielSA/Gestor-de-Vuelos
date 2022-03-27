@@ -51,6 +51,15 @@ namespace API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenOptions:SecretKey"]))
                 };
             });
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(Configuration["Client"])
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -69,6 +78,8 @@ namespace API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseRouting();
 
