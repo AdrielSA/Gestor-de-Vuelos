@@ -32,9 +32,13 @@ class Vuelos extends React.Component{
         axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
         axios.get(getall)
         .then(res =>{
-            this.setState({
-                vuelos: res.data.data
-            });
+            if(res.status === 200){
+                this.setState({
+                    vuelos: res.data.data
+                });
+            }else if(res.status === 401){
+                this.props.navigate("/", {state: {from: this.location}, replace: true});
+            }
         });
     }
 

@@ -9,6 +9,7 @@ import Update from './components/Vuelos/Update.jsx';
 import Add from './components/Vuelos/Add.jsx';
 
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PrivateRoute from './components/Common/PrivateRoute.jsx';
 
 
 function App() {
@@ -18,9 +19,9 @@ function App() {
         <Routes>
           <Route exact path="/" element={ <Login /> } />
           <Route exact path="/register" element={ <Register /> } />
-          <Route exact path="/vuelos" element={ <Vuelos /> } />
-          <Route exact path="/add" element={ <Add /> } />
-          <Route exact path="/update/:id" element={ <Update /> } />
+          <Route exact path="/vuelos" element={ <PrivateRoute><Vuelos /></PrivateRoute> } />
+          <Route exact path="/add" element={ <PrivateRoute><Add /></PrivateRoute> } />
+          <Route exact path="/update/:id" element={ <PrivateRoute><Update /></PrivateRoute> } />
         </Routes>
       </Router>
     </React.Fragment>
