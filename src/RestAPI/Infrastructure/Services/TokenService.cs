@@ -48,6 +48,7 @@ namespace Infrastructure.Services
             //Claims
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, auth.Id.ToString()),
                 new Claim(ClaimTypes.Name, auth.Nombre),
                 new Claim(ClaimTypes.Email, auth.Correo),
                 new Claim(ClaimTypes.Role, auth.CodigoRol),
@@ -60,7 +61,7 @@ namespace Infrastructure.Services
                 options.Audience,
                 claims,
                 DateTime.Now,
-                DateTime.UtcNow.AddHours(options.ValidTime)
+                DateTime.UtcNow.AddYears(options.ValidTime)
             );
 
             var token = new JwtSecurityToken(header, payload);

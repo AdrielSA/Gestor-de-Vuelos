@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import '../../assets/css/Login.css';
+import '../../assets/css/Style.css';
 import { useNavigate } from "react-router-dom";
 import { login } from '../../services/API.js';
 
@@ -27,15 +27,15 @@ class Login extends React.Component {
         event.preventDefault();
         axios.post(login, this.state.data)
         .then(res => {
-            console.log(res);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("expire", res.data.expiryDate);
             this.props.navigate("/vuelos");
         }).catch(error => {
             console.log(error);
             this.setState({
-                    error: true,
-                    msg: "Hubo un error"
-                });
+                error: true,
+                msg: "Hubo un error."
+            });
         });
     }
 
@@ -46,11 +46,11 @@ class Login extends React.Component {
                     <div id="formContent">
                         
                         <div className="fadeIn first">
-                            <h2>Gestor de Vuelos</h2>
+                            <h2>Inicio de Sesión</h2>
                         </div>
                         <form onSubmit={this.handleSubmit}>
-                            <input type="text" id="login" className="fadeIn second" name="correo"placeholder="Correo" onChange={this.handleChange} />
-                            <input type="password" id="password" className="fadeIn third" name="contraseña" placeholder="Contraseña" onChange={this.handleChange} />
+                            <input type="text" id="login" className="fadeIn second" name="correo"placeholder="Correo" required onChange={this.handleChange} />
+                            <input type="password" id="password" className="fadeIn third" name="contraseña" placeholder="Contraseña" required onChange={this.handleChange} />
                             <input type="submit" className="fadeIn fourth" value="Iniciar Sesión" />
                         </form>
                         {this.state.error === true &&

@@ -1,8 +1,6 @@
 ﻿using Domain.Entities;
-using Domain.Exceptions;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,13 +30,12 @@ namespace Infrastructure.Repositories
         {
             return await entities.Where(x => x
                 .Correo.ToLower().Equals(
-                correo.ToLower())).FirstOrDefaultAsync();
+                correo.ToLower())).SingleOrDefaultAsync();
         }
 
-        public new async Task AddAsync(Usuario usuario)
+        public async Task AddAsync(Usuario usuario)
         {
-            if (!usuario.CodigoRol.Equals("OFIC"))
-                throw new CustomException("Rol Inválido.");
+            usuario.CodigoRol = "OFIC";
             usuario.Contraseña = service.HashingPass(usuario.Contraseña);
             await entities.AddAsync(usuario);
             await context.SaveChangesAsync();

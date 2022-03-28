@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,14 +22,8 @@ namespace Infrastructure.Repositories
         {
             var entity = await entities.FindAsync(id);
             if (entity.Equals(null))
-                throw new ArgumentException("No se encontró una entidad con este ID.", "Id");
+                throw new CustomException("No se encontró una entidad con este ID.");
             return entity;
-        }
-
-        public async Task AddAsync(T entity)
-        {
-            await entities.AddAsync(entity);
-            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

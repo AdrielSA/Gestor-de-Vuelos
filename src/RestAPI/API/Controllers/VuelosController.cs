@@ -92,7 +92,8 @@ namespace API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await repository.AddAsync(vuelo);
+                    var id = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    await repository.AddAsync(id, vuelo);
                     var response = new ApiResponse { IsSuccess = true };
                     return Ok(response);
                 }
