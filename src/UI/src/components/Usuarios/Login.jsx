@@ -28,7 +28,7 @@ class Login extends React.Component {
         axios.post(login, this.state.data)
         .then(res => {
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem("expire", res.data.expiryDate);
+            localStorage.setItem("rol", res.data.rol);
             this.props.navigate("/vuelos");
         }).catch(error => {
             console.log(error);

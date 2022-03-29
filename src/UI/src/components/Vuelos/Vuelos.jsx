@@ -7,7 +7,8 @@ import { getall, remove } from '../../services/API.js';
 
 class Vuelos extends React.Component{
     state={
-        vuelos:[]
+        vuelos:[],
+        admin:false
     }
 
     updateVuelo = id =>{
@@ -29,12 +30,14 @@ class Vuelos extends React.Component{
 
     componentDidMount(){
         let token = localStorage.getItem("token");
+        let rol = localStorage.getItem("rol");
         axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
         axios.get(getall)
         .then(res =>{
             if(res.status === 200){
                 this.setState({
-                    vuelos: res.data.data
+                    vuelos: res.data.data,
+                    admin: rol === "Administrador" ? true : false
                 });
             }else if(res.status === 401){
                 this.props.navigate("/", {state: {from: this.location}, replace: true});
@@ -51,12 +54,13 @@ class Vuelos extends React.Component{
                     <table className="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Origen</th>
-                                <th scope="col">Destino</th>
-                                <th scope="col">Partida</th>
-                                <th scope="col">Regreso</th>
-                                <th scope="col">Pasajeros</th>
+                                <th>ID</th>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>Partida</th>
+                                <th>Regreso</th>
+                                <th>Pasajeros</th>
+                                {this.state.admin && <th>Usuario</th>}
                                 <th></th>
                             </tr>
                         </thead>
@@ -70,6 +74,7 @@ class Vuelos extends React.Component{
                                         <td>{value.partida}</td>
                                         <td>{value.regreso}</td>
                                         <td>{value.pasajeros}</td>
+                                        {this.state.admin && <td>{value.usuario.nombre}</td>}
                                         <td>
                                             <input type="button" id="btnS" onClick={() => this.updateVuelo(value.id)} value="Editar" />
                                             <input type="button" id="btnS" style={{"background":"gray"}} onClick={() => this.deleteVuelo(value.id)} value="Eliminar" />

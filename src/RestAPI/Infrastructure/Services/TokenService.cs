@@ -68,7 +68,8 @@ namespace Infrastructure.Services
             return new LoginResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                ExpiryDate = token.ValidTo
+                ExpiryDate = token.ValidTo,
+                Rol = auth.CodigoRolNavigation.Nombre
             };
         }
     }

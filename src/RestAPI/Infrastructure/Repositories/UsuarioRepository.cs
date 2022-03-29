@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Usuario> GetByLogin(string correo)
         {
-            return await entities.Where(x => x
+            return await entities.Include(e => e.CodigoRolNavigation).Where(x => x
                 .Correo.ToLower().Equals(
                 correo.ToLower())).SingleOrDefaultAsync();
         }

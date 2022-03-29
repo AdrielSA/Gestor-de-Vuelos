@@ -42,6 +42,7 @@ namespace Infrastructure.Repositories
         {
             var AdminRol = await context.Roles.FirstOrDefaultAsync();
             return rol.Equals(AdminRol.Codigo) ? await entities
+                .Include(x => x.Usuario)
                 .ToListAsync() : await entities
                 .Include(x => x.Usuario)
                 .Where(x => x.Usuario.CodigoRol
